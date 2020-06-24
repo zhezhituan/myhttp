@@ -33,12 +33,13 @@ int sserver::start(size_t backlog, bool enblock)
     if ((ret = bind(t_fd, (sockaddr *)&serv_addr, sizeof(serv_addr))) < 0)
     {
         //<unistd.h>
-        LOG(INFO) << ret << strerror(errno);
+        LOG(INFO) << "sserver start error" << strerror(errno)<<std::endl;
         ::close(t_fd);
         return -1;
     }
     if (listen(t_fd, backlog) < 0)
     {
+        LOG(INFO) << "sserver listen error" << strerror(errno)<<std::endl;
         ::close(t_fd);
         return -1;
     }
@@ -50,8 +51,11 @@ int sserver::close()
     GUARD(m_smutex);
     if (m_fd < 0)
         return -1;
-    if (::close(m_fd) < 0)
+    int ret;
+    if ((ret=::close(m_fd)) < 0){
+        LOG(INFO) << "sserver close error" << strerror(errno)<<std::endl;
         return -1;
+    }
     m_fd = -1;
     return 0;
 }
@@ -63,8 +67,10 @@ sstream *sserver::accept()
     struct sockaddr_in clientaddr;
     socklen_t len = sizeof(clientaddr);
     int clientfd = ::accept(m_fd, (sockaddr *)&clientaddr, &len);
-    if (clientfd < 0)
+    if (clientfd < 0){
+        LOG(INFO) << "sserver accept error" << strerror(errno)<<std::endl;
         return NULL;
+    }
     sstream *client = new sstream(clientfd);
     return client;
 }
@@ -93,8 +99,11 @@ int sstream::start()
     if (m_fd > 0)
         return 0;
     m_fd = socket(AF_INET, SOCK_STREAM, 0);
-    if (m_fd < 0)
+    if (m_fd < 0){
+        LOG(INFO) << "sstream startt error" << strerror(errno)<<std::endl;
         return -1;
+    }
+        
     return 0;
 }
 int sstream::close()
@@ -102,10 +111,12 @@ int sstream::close()
     GUARD(m_smutex);
     if (m_fd < 0)
         return 0;
-    if (::close(m_fd) < 0)
+    if (::close(m_fd) < 0){
+        LOG(INFO) << "sstream close error" << strerror(errno)<<std::endl;
         return -1;
+    }
     else
-    {
+    {   
         m_fd = -1;
         return 0;
     }
@@ -119,10 +130,15 @@ int sstream::connent(const std::string _addr, const uint16_t _port)
     bzero(&clientaddr, sizeof(clientaddr));
     clientaddr.sin_family = AF_INET;
     clientaddr.sin_port = htons(_port);
-    if (inet_aton(_addr.c_str(), &clientaddr.sin_addr) < 0)
+    if (inet_aton(_addr.c_str(), &clientaddr.sin_addr) < 0){
+        LOG(INFO) << "sstream inet_aton error" << strerror(errno)<<std::endl;
         return -1;
-    if (::connect(m_fd, (sockaddr *)&clientaddr, sizeof(clientaddr)) < 0)
+    }
+    if (::connect(m_fd, (sockaddr *)&clientaddr, sizeof(clientaddr)) < 0){
+        LOG(INFO) << "sstream conent error" << strerror(errno)<<std::endl;
         return -1;
+    }
+        
     return 0;
 }
 ssize_t sstream::recv(void *buf, size_t len, int flags)

@@ -5,10 +5,11 @@
 int main(){
     sstream sclient;
     sclient.start();
+    std::cout<<"start"<<sclient.fd();
     char buf[1000];
     while(true){
-        if(sclient.connent("127.0.0.1",2222)){
-            std::cout<<"hascon";
+        if(sclient.connent("127.0.0.1",2222)==0){
+            std::cout<<"hascon"<<sclient.fd();
             while(true){
             std::string s;
             std::cin>>s;
@@ -18,7 +19,8 @@ int main(){
             }
         }
         else{
-            std::cout<<strerror(errno)<<std::endl;
+            std::cout<<sclient.fd()<<strerror(errno)<<std::endl;
+            break;
         }
     }
     return 0;

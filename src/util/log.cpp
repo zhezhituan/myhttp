@@ -12,9 +12,9 @@ std::ostream&  slog::logout(log_rank lr,const std::string& file,const std::strin
     char* dt = ctime(&tm);
     dt[strlen(dt)-1]=0;
     if(lr==INFO){
-        return slog::info_log_file<<std::endl<<dt<<file<<":"<<function<<":"<<line<<"  ";
+        return slog::info_log_file<<dt<<file<<":"<<function<<":"<<line<<"  ";
     }
-    else return slog::error_log_file<<std::endl<<dt<<file<<":"<<function<<":"<<line<<"  ";
+    else return slog::error_log_file<<dt<<file<<":"<<function<<":"<<line<<"  ";
 }
 slog* slog::getslog(){
     if(slog::m_log==NULL){

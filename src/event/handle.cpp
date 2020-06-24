@@ -36,6 +36,12 @@ int sstreamhandle::handle(uint32_t ev){
     if(ev&EPOLLIN){ 
         char buf[100];
         int nrecv=m_stream->recv(buf,100,0);
+        if(nrecv==0){
+            unreg();
+            LOG(INFO)<<this->fd()<<"close"<<std::endl;
+            m_stream->close();
+            return 0;
+        }
         m_stream->send(buf,nrecv,0);
     }
 }

@@ -21,7 +21,7 @@ class slog{
         static slog* m_log;
 };
 #ifdef _LOG_COUT_
-    #define LOG(log_rank) std::cout<<std::endl<<__FILE__<<":"<<__FUNCTION__<<":"<<__LINE__<<"  "
+    #define LOG(log_rank) std::cout<<__FILE__<<":"<<__FUNCTION__<<":"<<__LINE__<<"  "
 #else
     #define LOG(log_rank) slog::getslog()->logout(log_rank,__FILE__,__FUNCTION__,__LINE__)
 #endif 

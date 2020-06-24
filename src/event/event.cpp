@@ -22,11 +22,11 @@ int event::reghandle(Ihandle *handle)
         ev.events=EPOLLIN|EPOLLET;
         epoll_ctl(m_epollfd,EPOLL_CTL_ADD,fd,&ev);
         m_handlemap[fd] = handle;
-        LOG(INFO) << "reghandle" << fd;
+        LOG(INFO) << "reghandle" << fd<<std::endl;
     }
     else
     {
-        LOG(INFO) << "reghandle" << fd;
+        LOG(INFO) << "reghandle" << fd<<std::endl;
     }
     return 0;
 }
@@ -40,7 +40,7 @@ int event::unreghandle(Ihandle *handle)
     else
     {
         m_handlemap.erase(fd);
-        LOG(INFO) << "unreghandle" << fd;
+        LOG(INFO) << "unreghandle" << fd<<std::endl;
     }
     return 0;
 }
@@ -61,7 +61,7 @@ void *event::epollwait(void *arg)
         for (int i = 0; i < nevent; i++)
         {
             epoll_event t_ev = *(eventbuff + i);
-            LOG(INFO) << t_ev.data.fd << t_ev.events;
+            LOG(INFO) << t_ev.data.fd << t_ev.events<<std::endl;
             task t = {(int)t_ev.data.fd, (uint32_t)t_ev.events};
             ev->m_taskqueue.push(t);
         }
@@ -82,7 +82,7 @@ sthreadpool::sthreadpool(int _pthreadnum,squeue<task>* _taskqueue,std::map<int, 
     m_taskqueue=_taskqueue;
     m_handlemap=_handlemap;
     create();
-    LOG(INFO)<<"threadpool create";
+    LOG(INFO)<<"threadpool create"<<std::endl;
 }
 
 void* sthreadpool::process(void* arg){
@@ -92,7 +92,7 @@ void* sthreadpool::process(void* arg){
     while(ev->m_taskqueue.pop(task)){
         itor=ev->m_handlemap.find(task.first);
         if(itor==ev->m_handlemap.end()){
-            LOG(INFO)<<task.first<<"has no handle";
+            LOG(INFO)<<task.first<<"has no handle"<<std::endl;
         }
         else (*itor).second->handle(task.second);
     }
