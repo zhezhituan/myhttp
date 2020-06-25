@@ -18,8 +18,10 @@ int sserver::start(size_t backlog, bool enblock)
     if (m_fd > 0)
         return 1;
     int t_fd;
-    if ((t_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+    if ((t_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0){
+        LOG(INFO) << "sserver socket error" << strerror(errno)<<std::endl;
         return -1;
+    }
     setnoblock(t_fd, enblock);
     struct sockaddr_in serv_addr;
     //#include <netinet/in.h>
@@ -82,6 +84,7 @@ int sstream::fd()
 }
 sstream::sstream()
 {
+    m_fd=-1;
 }
 sstream::sstream(int _fd)
 {
@@ -100,7 +103,7 @@ int sstream::start()
         return 0;
     m_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (m_fd < 0){
-        LOG(INFO) << "sstream startt error" << strerror(errno)<<std::endl;
+        LOG(INFO) << "sstream start error" << strerror(errno)<<std::endl;
         return -1;
     }
         
