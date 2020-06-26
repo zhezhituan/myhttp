@@ -12,7 +12,7 @@ SRCDIR += src/pthread
 SRCDIR += src/test
 SRCDIR += src/socket
 SRCDIR += src/event
-#SRCDIR += src/http
+SRCDIR += src/http
 
 TARGET_T = $(BINDIR)/$(TARGET)
 include allrules.mk

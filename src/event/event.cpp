@@ -57,7 +57,7 @@ void *event::epollwait(void *arg)
     int nevent;
     while (true)
     {
-        nevent = epoll_wait(epollfd, eventbuff, 1000, 60);
+        nevent = epoll_wait(epollfd, eventbuff, 1000, 1);
         for (int i = 0; i < nevent; i++)
         {
             epoll_event t_ev = *(eventbuff + i);
@@ -69,6 +69,7 @@ void *event::epollwait(void *arg)
 }
 
 int sthreadpool::create(){
+    LOG(INFO)<<"create"<<m_pthreadnum<<"pthread"<<std::endl;
     for(int i=0;i<m_pthreadnum;i++){
         pthread_t pt;
         pthread_create(&pt,NULL,process,(void*)this);

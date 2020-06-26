@@ -7,9 +7,13 @@
 #include "event.h"
 int main(){
     event* evproxy=event::getinstance();
-    sserver server("0.0.0.0",2222);
+    sserver server("0.0.0.0",1234);
     server.start(10,true);
     Ihandle* serverhandle = new sserverhandle(&server);
-    while(true){};
+    while(true){
+        std::string cmd;
+        std::cin>>cmd;
+        //dong something
+    }
     return 0;
 }

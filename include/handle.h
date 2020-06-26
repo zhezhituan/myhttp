@@ -17,6 +17,7 @@ class sstreamhandle:public Ihandle{
     public:
     sstream* m_stream;
     sstreamhandle(){};
+    ~sstreamhandle();
     sstreamhandle(sstream*);
     int handle(uint32_t);
     int reg();
@@ -27,6 +28,7 @@ class sserverhandle:public Ihandle{
     public:
     sserver* m_server;
     sserverhandle(){};
+    ~sserverhandle();
     sserverhandle(sserver*);
     int handle(uint32_t);
     int reg();

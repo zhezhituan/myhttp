@@ -8,7 +8,7 @@ int main(){
     std::cout<<"start"<<sclient.fd();
     char buf[1000];
     while(true){
-        if(sclient.connent("127.0.0.1",2222)==0){
+        if(sclient.connent("127.0.0.1",1234)==0){
             std::cout<<"hascon"<<sclient.fd();
             while(true){
             std::string s;
