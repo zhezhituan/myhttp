@@ -1,3 +1,7 @@
 a http server with much issue
 epoll
 threadpool
+
+make
+./bin/main
+访问 127.0.0.1:9000
